@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathJax Web Calculator</title>
+
+    <!-- Load MathJax for LaTeX rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Load math.js for handling calculus, linear algebra, and matrix operations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        input, button {
+            font-size: 16px;
+        }
+        .error {
+            color: red;
+        }
+        .syntax {
+            margin-top: 30px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Calculator with MathJax and MathJS</h1>
+
+<form id="calculator">
+    <label for="expression">Enter your expression (LaTeX or math):</label><br><br>
+    <input type="text" id="expression" name="expression" placeholder="e.g., sin(pi / 4) or \int x^2 dx" size="50"><br><br>
+    <button type="button" onclick="calculate()">Calculate</button>
+</form>
+
+<div id="output"></div>
+<div id="result"></div>
+
+<div class="syntax">
+    <h2>Available Syntax</h2>
+    <h3>Calculus</h3>
+    <ul>
+        <li>Derivative: `derivative(expression, variable)`</li>
+        <li>Integral: `integrate(expression, variable)`</li>
+        <li>Limit: `limit(expression, variable, value)`</li>
+    </ul>
+    <h3>Linear Algebra</h3>
+    <ul>
+        <li>Matrix: `[[a, b], [c, d]]`</li>
+        <li>Matrix multiplication: `multiply(A, B)`</li>
+        <li>Matrix determinant: `det(A)`</li>
+        <li>Matrix inverse: `inv(A)`</li>
+    </ul>
+    <h3>Other Functions</h3>
+    <ul>
+        <li>Trigonometry: `sin(x), cos(x), tan(x)`</li>
+        <li>Exponents: `exp(x), log(x)`</li>
+        <li>Power: `pow(base, exponent)`</li>
+        <li>Factorial: `factorial(n)`</li>
+        <li>Square root: `sqrt(x)`</li>
+    </ul>
+    <p>For more syntax, visit the <a href="https://mathjs.org/docs/reference/functions.html" target="_blank">Math.js documentation</a>.</p>
+</div>
+
+<script>
+    // Trigger calculation on Enter key press
+    document.getElementById('expression').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();  // Prevent form submission
+            calculate();
+        }
+    });
+
+    function calculate() {
+        const input = document.getElementById("expression").value;
+        const output = document.getElementById("output");
+        const result = document.getElementById("result");
+
+        try {
+            // Display the entered LaTeX
+            output.innerHTML = `Expression: \\(${input}\\)`;
+
+            // Render LaTeX using MathJax
+            MathJax.typeset();
+
+            // Evaluate the expression using math.js
+            const mathResult = math.evaluate(input);
+            result.innerHTML = `Result: ${mathResult}`;
+
+        } catch (error) {
+            result.innerHTML = `<span class="error">Error: Invalid expression or LaTeX input.</span>`;
+        }
+    }
+</script>
+
+</body>
+</html>
