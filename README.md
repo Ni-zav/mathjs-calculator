@@ -2,4 +2,4 @@
 
 simple calculator with mathjs. 
 
-demo: soon
+demo: https://mathjs-calulator.netlify.app/
